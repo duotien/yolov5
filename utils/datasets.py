@@ -200,6 +200,12 @@ class LoadImages:
             # Read video
             self.mode = 'video'
             ret_val, img0 = self.cap.read()
+            
+            # Skipping frame
+            if self.skip_frame != 0:
+                for i in range(self.skip_frame-1):
+                    self.cap.read()
+            
             while not ret_val:
                 self.count += 1
                 self.cap.release()
@@ -210,10 +216,7 @@ class LoadImages:
                     self.new_video(path)
                     ret_val, img0 = self.cap.read()
             
-            # Skipping frame
-            if self.skip_frame != 0:
-                for i in range(self.skip_frame-1):
-                    ret_val, img0 = self.cap.read()
+            
 
             self.frame += 1
             s = f'video {self.count + 1}/{self.nf} ({self.frame}/{int(self.frames/self.skip_frame)}) {path}: '
